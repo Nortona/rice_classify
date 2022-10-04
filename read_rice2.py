@@ -41,7 +41,7 @@ train_loader = torch.utils.data.DataLoader(train_dataset, batch_size = bs, shuff
 val_dataset = torchvision.datasets.ImageFolder(root=dataset_dir+"val", transform = val_test_transform)
 valid_loader = torch.utils.data.DataLoader(val_dataset, batch_size = bs, shuffle=False, num_workers = 2) 
 
-test_dataset = torchvision.datasets.ImageFolder(root=dataset_dir+"test", transform = val_test_transform)
-test_loader = torch.utils.data.DataLoader(test_dataset, batch_size = bs, shuffle=False, num_workers = 2)
+# test_dataset = torchvision.datasets.ImageFolder(root=dataset_dir+"test", transform = val_test_transform)
+# test_loader = torch.utils.data.DataLoader(test_dataset, batch_size = bs, shuffle=False, num_workers = 2)
 
 print("Data Loader Successed!")
