@@ -3,7 +3,7 @@ import torch
 import torchvision.models as models
 
 class Vgg16(nn.Module):
-    def __init__(self,num_classes):
+    def __init__(self,num_classes,pretrained=False):
         super(Vgg16,self).__init__()
         self.num_classes = num_classes
 
@@ -66,9 +66,13 @@ class Vgg16(nn.Module):
         # # add classifier into class property
         # self.classifier = nn.Sequential(*classifier)
 
-        self.model = models.vgg16(pretrained=True)
+        self.model = models.vgg16(pretrained=pretrained)
         # self.classify = nn.Linear(1000,5)
-        self.fc = nn.Linear(in_features=1000,out_features=num_classes)
+        self.fc1 = nn.Linear(in_features=1000,out_features=512)
+        self.fc2 = nn.Linear(in_features=512,out_features=128)
+        self.fc3 = nn.Linear(in_features=128,out_features=32)
+        self.fc4 = nn.Linear(in_features=32,out_features=num_classes)
+
 
 
     def forward(self, x):
@@ -77,8 +81,11 @@ class Vgg16(nn.Module):
         # classify_result = self.classifier(feature)
         # return classify_result
 
-        out = self.model(x)
-        out = self.fc(out)
+        x = self.model(x)
+        x = self.fc1(x)
+        x = self.fc2(x)
+        x = self.fc3(x)
+        out = self.fc4(x)
         return out
 
 # if __name__ == "__main__":
