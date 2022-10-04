@@ -10,7 +10,7 @@ import torchvision
 import tensorboardX
 from utils.callbacks import LossHistory
 from utils.utils_fit import fit_one_epoch
-
+from nets.model_training import weights_init
 os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 
 # from read_rice import train_loader,valid_loader
@@ -34,9 +34,10 @@ if __name__ == "__main__":
     weight_decay = 5e-4  # weight_decay(float):权重衰减,
 
     # net = resnet18().to(device)
-
-    model = Vgg16(5).to(device)
-
+    pretrained = False
+    model = Vgg16(5,pretrained).to(device)
+    if not  pretrained:
+        weights_init(model)
     # model = LeNet(5).to(device)
     # print(next(net.parameters()).device)
     # print(net)
