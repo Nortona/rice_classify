@@ -1,14 +1,14 @@
-from re import split
+# from re import split
 
 import torch
-import torchvision
+
 import torchvision.models as models
 import torchvision.transforms as transforms
-from net import resnet18
+
 from nets.vgg16 import Vgg16
-import time
+
 import os
-import cv2
+
 import PIL.Image as Image
 from IPython.display import display
 import numpy as np
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     print(label_to_idx)
 
     net = Vgg16(5).to(device)
-    model_path = "logs/models_vgg16_pretrained_lr0.0001_bs32_1934/ep005-loss0.109-val_loss0.007.pth"
+    model_path = "logs/models_vgg16+fc1000_512_256_128_32_5_lr_0.0001_bs32/best_epoch_weights.pth"
     net.load_state_dict(torch.load(model_path))
     # # switch the model to evaluation mode to make dropout and batch norm work in eval mode
     net.eval()
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     # path = "Ipsala/Ipsala (154).jpg"
     # path = "Arborio/Arborio (40).jpg"
     # mode = input("Input mode('predict','dir_predict'):")
-    mode = "dir_predict"
+    mode = "predict"
     def detect_image(image):
         image_name = image
         image = loader(image).float()
@@ -85,12 +85,13 @@ if __name__ == '__main__':
             if img_name.lower().endswith(
                     ('.bmp', '.dib', '.png', '.jpg', '.jpeg', '.pbm', '.pgm', '.ppm', '.tif', '.tiff')):
                 image_path = os.path.join(dataset_dir, img_name)
+                
                 image = Image.open(image_path)
                 res = detect_image(image)
 
                 if not os.path.exists(dir_save_path):
                     os.makedirs(dir_save_path)
 
-                with open(os.path.join(dir_save_path, "classify_res"), 'a') as f:
+                with open(os.path.join(dir_save_path, "classify_res.txt"), 'a') as f:
                     f.write(str(res))
                     f.write("\n")
